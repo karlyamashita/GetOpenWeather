@@ -187,9 +187,11 @@ String parseUartValue(String uartMsg, String removeCommand)
 void getTime()
 {
 	timeClient.update();
-	Serial.print("CMD_NTP_TIME\"");
+	Serial.print("CMD_NTP_DAY\"");
 	Serial.print(daysOfTheWeek[timeClient.getDay()]);
-	Serial.print(", ");
+	Serial.println("\"");
+
+	Serial.print("CMD_NTP_TIME\"");
 	Serial.println(timeClient.getFormattedTime() + "\"");
 }
 
