@@ -40,7 +40,7 @@
 const long utcOffsetInSeconds = -28800;
 
 // openweather api
-const String APIKEY = ""; // Register on openweathermap.org and enter you App ID. 
+const String APIKEY = "90a33af8a1ef8cfdd725739ebcdc6b0d"; // Register on openweathermap.org and enter you App ID. 
 const String zipcodeID = "92595,us"; // add your location here
 // end user changable
 
@@ -202,7 +202,9 @@ void getWeather()
 		return;
 	}
 	// We now create a URI for the request
-	String url = "/data/2.5/forecast?zip=" + zipcodeID + "&units=imperial&cnt=1&APPID=" + APIKEY;
+	String url = "/data/2.5/weather?zip=" + zipcodeID + "&units=imperial&cnt=1&APPID=" + APIKEY;
+
+	Serial.println(url);
 
 	// This will send the request to the server
 	client.print(String("GET ") + url + " HTTP/1.1\r\n" +
@@ -236,10 +238,10 @@ void getWeather()
 		return;
 	}
 
-	String location = doc["city"]["name"];
-	String temperature = doc["list"]["main"]["temp"];
-	String description = doc["list"]["weather"]["description"];
-	String idString = doc["list"]["weather"]["id"];
+	String location = doc["name"];
+	String temperature = doc["main"]["temp"];
+	String description = doc["weather"]["description"];
+	String idString = doc["weather"]["id"];
 
 	Serial.println("CMD_CITY\"" + location + "\"");
 	Serial.println("CMD_TEMP\"" + temperature + "\"");
