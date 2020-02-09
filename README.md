@@ -4,8 +4,7 @@ Uses Visual Studio plugin, Visual Micro. However you can still use Arduino progr
 Connects to Wi-Fi router and sends NTP server time and openweathermap.org server data to serial device.
 Uses simple commands. Commands description is in ino file.
 
-The current JSON parameter example. 
-Note: If the JSON file doesn't parse correctly then openweathermap.org may have changed the parameters. Please check their website for the latest parameter.
+The current JSON weather parameter example. 
 
 {
   "coord": {
