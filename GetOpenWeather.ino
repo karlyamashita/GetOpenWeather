@@ -40,7 +40,7 @@
 const long utcOffsetInSeconds = -28800;
 
 // openweather api
-const String APIKEY = "90a33af8a1ef8cfdd725739ebcdc6b0d"; // Register on openweathermap.org and enter you App ID. 
+const String APIKEY = ""; // Register on openweathermap.org and enter you App ID. 
 const String zipcodeID = "92595,us"; // add your location here
 // end user changable
 
