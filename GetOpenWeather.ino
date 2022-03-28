@@ -53,7 +53,7 @@
 
 #include "NTPClient.h" // https://github.com/arduino-libraries/NTPClient
 #include "ESP8266WiFi.h" // https://github.com/esp8266/Arduino
-#include "WiFiUdp.h"
+#include "WiFiUdp.h" // part of the Arduino esp8266 library
 
 #include "TimeLib.h" // https://github.com/PaulStoffregen/Time
 #include "ArduinoJson.h" // https://github.com/bblanchon/ArduinoJson
@@ -495,64 +495,16 @@ String GetTimeFromEpoch(String str_IN, String epoch_IN)
 	return str;
 }
 
-String GetYearFromEpoch(String str_IN, String epoch_IN)
-{
-	char str[32];
-	char str2[16];
-
-	strcpy(str, epoch_IN.c_str()); // convert to array
-	long ret = strtol(str, NULL, 10); // get long number
-
-	strcpy(str, str_IN.c_str());
-	strcat(str, "\"");
-	sprintf(str2, "%d", year(ret));
-	strcat(str, str2);
-	strcat(str, "\"");
-	return str;
-}
-
-String GetDayFromEpoch(String str_IN, String epoch_IN)
-{
-	char str[32];
-	char str2[16];
-
-	strcpy(str, epoch_IN.c_str()); // convert to array
-	long ret = strtol(str, NULL, 10); // get long number
-
-	strcpy(str, str_IN.c_str());
-	strcat(str, "\"");
-	sprintf(str2, "%d", day(ret));
-	strcat(str, str2);
-	strcat(str, "\"");
-	return str;
-}
-
-String GetMonthFromEpoch(String str_IN, String epoch_IN)
-{
-	char str[32];
-	char str2[16];
-
-	strcpy(str, epoch_IN.c_str()); // convert to array
-	long ret = strtol(str, NULL, 10); // get long number
-
-	strcpy(str, str_IN.c_str());
-	strcat(str, "\"");
-	sprintf(str2, "%d", month(ret));
-	strcat(str, str2);
-	strcat(str, "\"");
-	return str;
-}
-
 /* Load WLAN credentials from EEPROM */
 void loadCredentials() {
 	EEPROM.begin(512);
 	EEPROM.get(0, ssid);
-	EEPROM.get(0 + sizeof(ssid), password);
-	EEPROM.get(0 + sizeof(ssid) + sizeof(password), ntpTimeZone); // added timeZone 07/3/2021
-	EEPROM.get(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone), zipcodeID); // added zipcodeID 03/06/2022
-	EEPROM.get(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID), APIKEY); // added API key 03/22/2022
+	EEPROM.get(sizeof(ssid), password);
+	EEPROM.get(sizeof(ssid) + sizeof(password), ntpTimeZone); // added timeZone 07/3/2021
+	EEPROM.get(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone), zipcodeID); // added zipcodeID 03/06/2022
+	EEPROM.get(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID), APIKEY); // added API key 03/22/2022
 	char ok[2 + 1];
-	EEPROM.get(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID) + sizeof(APIKEY), ok);
+	EEPROM.get(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID) + sizeof(APIKEY), ok);
 	EEPROM.end();
 	if (String(ok) != String("OK")) {
 		ssid[0] = 0;
@@ -567,12 +519,12 @@ void loadCredentials() {
 void saveCredentials() {
 	EEPROM.begin(512);
 	EEPROM.put(0, ssid);
-	EEPROM.put(0 + sizeof(ssid), password);
-	EEPROM.put(0 + sizeof(ssid) + sizeof(password), ntpTimeZone); // added timeZone 07/3/2021
-	EEPROM.put(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone), zipcodeID); // added zipcodeID 03/06/2022
-	EEPROM.put(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID), APIKEY); // added API key 03/22/2022
+	EEPROM.put(sizeof(ssid), password);
+	EEPROM.put(sizeof(ssid) + sizeof(password), ntpTimeZone); // added timeZone 07/3/2021
+	EEPROM.put(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone), zipcodeID); // added zipcodeID 03/06/2022
+	EEPROM.put(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID), APIKEY); // added API key 03/22/2022
 	char ok[2 + 1] = "OK";
-	EEPROM.put(0 + sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID) + sizeof(APIKEY), ok);
+	EEPROM.put(sizeof(ssid) + sizeof(password) + sizeof(ntpTimeZone) + sizeof(zipcodeID) + sizeof(APIKEY), ok);
 	EEPROM.commit();
 	EEPROM.end();
 }
